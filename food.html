@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Food · CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+</head><body class="bg-white font-sans text-slate-900 antialiased">
+<div id="nav"></div>
+<main class="mx-auto max-w-6xl px-5 py-12"><div id="header"></div><div id="app"></div></main>
+<div id="footer"></div>
+<script src="shared.js" onerror="document.body.innerHTML='<div style=&quot;font-family:sans-serif;padding:40px&quot;><h2>shared.js not found</h2><p>Keep ALL files in the same folder (campusconnect) and open index.html from there.</p></div>'"></script>
+<script>
+pageHeader("Food Court Pre-Order","Check how busy each outlet is and order takeaway ahead of time.");
+const OUTLETS=[{n:"Main Canteen",i:"🍛",crowd:"Moderate",hrs:"7:00 AM – 9:00 PM",menu:["Veg Thali – ₹80","Paneer Wrap – ₹70","Masala Dosa – ₹60"]},{n:"Café Hub",i:"☕",crowd:"Low",hrs:"8:00 AM – 10:00 PM",menu:["Cold Coffee – ₹90","Veg Sandwich – ₹75","Pasta – ₹110"]},{n:"Night Canteen",i:"🌙",crowd:"High",hrs:"7:00 PM – 2:00 AM",menu:["Maggi – ₹50","Egg Roll – ₹60","Fried Rice – ₹90"]}];
+const CROWD={Low:["green","bg-green-500",25],Moderate:["amber","bg-amber-500",60],High:["red","bg-red-500",92]};
+document.getElementById("app").innerHTML=`<div class="grid gap-5 md:grid-cols-3">${OUTLETS.map((o,i)=>{const [c,bar,w]=CROWD[o.crowd];return `<div class="${CARD}"><div class="flex items-center justify-between"><div class="grid h-12 w-12 place-items-center rounded-xl bg-blue-50 text-2xl">${o.i}</div>${badge("Crowd: "+o.crowd,c)}</div>
+<h3 class="mt-4 text-lg font-semibold">${o.n}</h3><p class="text-sm text-slate-500">${o.hrs}</p>
+<div class="mt-4 h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full ${bar}" style="width:${w}%"></div></div>
+<ul class="mt-4 space-y-1 text-sm text-slate-600">${o.menu.map(m=>`<li>${m}</li>`).join("")}</ul>
+<button onclick="order(${i})" class="${BTN} mt-6 w-full">Pre-order Takeaway</button></div>`}).join("")}</div>`;
+function order(i){const o=OUTLETS[i];openModal("Order from "+o.n,select("item","Food item",o.menu)+select("pickup","Pickup time",["In 15 minutes","In 30 minutes","In 45 minutes","In 1 hour"]),"Place order",m=>modalSuccess(m,`Order placed: ${val("item").split(" –")[0]}. Pickup ${val("pickup").toLowerCase()} at ${o.n}`));}
+</script></body></html>

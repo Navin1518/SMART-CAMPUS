@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maintenance · CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+</head><body class="bg-white font-sans text-slate-900 antialiased">
+<div id="nav"></div>
+<main class="mx-auto max-w-6xl px-5 py-12"><div id="header"></div><div id="app"></div></main>
+<div id="footer"></div>
+<script src="shared.js" onerror="document.body.innerHTML='<div style=&quot;font-family:sans-serif;padding:40px&quot;><h2>shared.js not found</h2><p>Keep ALL files in the same folder (campusconnect) and open index.html from there.</p></div>'"></script>
+<script>
+pageHeader("Maintenance Ticketing","Report a problem in your room or block and follow it until it is fixed.");
+const CATS=[["📶","Wi-Fi"],["❄️","AC"],["💧","Water"],["🔧","Plumbing"],["⚡","Electricity"],["📝","Other"]];
+const ST={Pending:"amber","In Progress":"blue",Resolved:"green"};
+let tickets=[["#1042","Wi-Fi","Block A · 214","Router keeps disconnecting","Pending"],["#1041","AC","Block C · 108","AC not cooling","In Progress"],["#1040","Water","Block B · 3rd floor","No hot water in geyser","In Progress"],["#1039","Electricity","Block A · 301","Tube light flickering","Pending"],["#1038","Plumbing","Block D · 12","Tap leaking","Pending"],["#1037","Wi-Fi","Library","Weak signal on 2nd floor","Pending"],["#1035","Other","Block B · 220","Broken window latch","Resolved"],["#1033","Water","Block C · 5","Low water pressure","Resolved"]];
+let cat="Wi-Fi";
+document.getElementById("app").innerHTML=`<div class="grid gap-6 lg:grid-cols-5">
+<div class="${CARD} lg:col-span-2 hover:translate-y-0"><h2 class="text-lg font-semibold">Raise a ticket</h2>
+<p class="mt-5 text-sm font-medium text-slate-700">Category</p><div id="cats" class="mt-2 grid grid-cols-3 gap-2"></div>
+<div class="mt-5 space-y-4">${field("Room / block",`<input id="room" class="${INPUT}" placeholder="e.g. Block A, Room 214">`)}${field("Describe the issue",`<textarea id="desc" rows="4" class="${INPUT}" placeholder="What is wrong?"></textarea>`)}</div>
+<button onclick="raise()" class="${BTN} mt-6 w-full">Raise Ticket</button></div>
+<div class="lg:col-span-3"><h2 class="mb-4 text-lg font-semibold">Ticket history</h2><div id="list" class="space-y-3"></div></div></div>`;
+function drawCats(){document.getElementById("cats").innerHTML=CATS.map(([i,n])=>`<button onclick="cat='${n}';drawCats()" class="rounded-xl border px-2 py-3 text-sm font-medium transition ${n===cat?"border-blue-600 bg-blue-50 text-blue-700":"border-slate-200 text-slate-600 hover:bg-slate-50"}"><div class="text-xl">${i}</div>${n}</button>`).join("");}
+function drawList(){document.getElementById("list").innerHTML=tickets.map(t=>`<div class="${CARD} flex items-start justify-between gap-3 p-4"><div><p class="text-sm text-slate-400">${t[0]} · ${t[1]} · ${t[2]}</p><p class="mt-1 font-medium">${t[3]}</p></div>${badge(t[4],ST[t[4]])}</div>`).join("");}
+function raise(){if(!val("room").trim()||!val("desc").trim())return toast("Please fill in the room and issue description");
+ tickets.unshift(["#"+(1043+tickets.length-8),cat,val("room"),val("desc"),"Pending"]);drawList();document.getElementById("room").value=document.getElementById("desc").value="";toast("Ticket raised. Status: Pending");}
+drawCats();drawList();
+</script></body></html>

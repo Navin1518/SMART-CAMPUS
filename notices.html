@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notices · CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+</head><body class="bg-white font-sans text-slate-900 antialiased">
+<div id="nav"></div>
+<main class="mx-auto max-w-6xl px-5 py-12"><div id="header"></div><div id="app"></div></main>
+<div id="footer"></div>
+<script src="shared.js" onerror="document.body.innerHTML='<div style=&quot;font-family:sans-serif;padding:40px&quot;><h2>shared.js not found</h2><p>Keep ALL files in the same folder (campusconnect) and open index.html from there.</p></div>'"></script>
+<script>
+pageHeader("Digital Notice Board & Outpass","Official notices in one place, plus your hostel outpass requests.");
+const TAG={Exam:"red",Event:"blue",Holiday:"green",Hostel:"amber"};
+const NOTICES=[["Exam","Mid-term exam schedule released","Mid-term exams begin on 4 November. Download your seating plan from the exam cell.","24 Oct"],["Event","Annual Tech Fest registrations open","Hackathon, robotics and design contests. Register before 30 October.","23 Oct"],["Holiday","Campus closed for Diwali break","Classes resume after the break. Hostels remain open for registered students.","21 Oct"],["Hostel","Hostel curfew timing updated","Curfew is now 10:30 PM for all blocks. Late entry needs prior warden approval.","20 Oct"]];
+let passes=[["Home visit","28 Oct – 31 Oct","Approved"],["Medical appointment","27 Oct, 4:00 PM","Pending"],["Family function","8 Nov – 10 Nov","Pending"]];
+const PS={Approved:"green",Pending:"amber"};
+document.getElementById("app").innerHTML=`<div class="grid gap-8 lg:grid-cols-3"><div class="space-y-4 lg:col-span-2"><h2 class="text-lg font-semibold">Latest notices</h2>${NOTICES.map(n=>`<div class="${CARD}"><div class="flex items-center justify-between">${badge(n[0],TAG[n[0]])}<span class="text-xs text-slate-400">${n[3]}</span></div><h3 class="mt-3 font-semibold">${n[1]}</h3><p class="mt-1 text-sm text-slate-500">${n[2]}</p></div>`).join("")}</div>
+<aside><h2 class="mb-4 text-lg font-semibold">My outpass</h2><div class="${CARD} hover:translate-y-0"><div id="passes" class="space-y-3"></div><button onclick="request()" class="${BTN} mt-5 w-full">Request Outpass</button></div></aside></div>`;
+function drawPasses(){document.getElementById("passes").innerHTML=passes.map(p=>`<div class="rounded-xl border border-slate-100 bg-slate-50 p-4"><div class="flex items-center justify-between gap-2"><p class="font-medium">${p[0]}</p>${badge(p[2],PS[p[2]])}</div><p class="mt-1 text-sm text-slate-500">${p[1]}</p></div>`).join("");}
+function request(){openModal("Request outpass",field("Reason",`<input id="why" class="${INPUT}" placeholder="e.g. Home visit">`)+field("Date or period",`<input id="when" class="${INPUT}" placeholder="e.g. 5 Nov – 7 Nov">`),"Submit request",m=>{if(!val("why").trim()||!val("when").trim())return toast("Please fill in both fields");passes.unshift([val("why"),val("when"),"Pending"]);drawPasses();modalSuccess(m,"Outpass requested. Status: Pending");});}
+drawPasses();
+</script></body></html>

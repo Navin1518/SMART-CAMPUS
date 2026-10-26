@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+</head><body class="bg-white font-sans text-slate-900 antialiased">
+<div id="nav"></div>
+<main class="mx-auto max-w-6xl px-5 py-12"><div id="header"></div><div id="app"></div></main>
+<div id="footer"></div>
+<script src="shared.js" onerror="document.body.innerHTML='<div style=&quot;font-family:sans-serif;padding:40px&quot;><h2>shared.js not found</h2><p>Keep ALL files in the same folder (campusconnect) and open index.html from there.</p></div>'"></script>
+<script>
+const FEATURES=[["library.html","📚","Library Seats","See live seat availability on every floor and book a spot."],["maintenance.html","🛠️","Maintenance","Raise a ticket for Wi-Fi, AC, water or power and track it."],["shuttle.html","🚌","Campus Shuttle","Live countdown, routes and the full day's timetable."],["emergency.html","🚨","Emergency","One-tap WhatsApp to SOS, your warden or security."],["food.html","🍔","Food Court","Check crowds and pre-order takeaway to skip the queue."],["notices.html","📢","Notices & Outpass","Read campus notices and request hostel outpasses."]];
+const STATS=[["47","Seats available","green"],["6","Open tickets","amber"],["4 min","Next shuttle","blue"],["4","Active notices","slate"]];
+document.getElementById("app").innerHTML=`
+<section class="-mt-4 pb-16 pt-8 text-center">
+ <div class="mb-6">${badge("● Live for the whole campus","blue")}</div>
+ <h1 class="mx-auto max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">One Smart Platform for Your Entire Campus</h1>
+ <p class="mx-auto mt-6 max-w-2xl text-lg text-slate-500">Find a library seat, report a maintenance issue, catch the shuttle, reach emergency help, pre-order food and stay on top of notices, all in one place.</p>
+ <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><a href="#features" class="${BTN} px-7 py-3">Explore Features</a><a href="emergency.html" class="inline-flex items-center justify-center rounded-xl bg-red-600 px-7 py-3 text-sm font-semibold text-white transition hover:bg-red-700">Emergency Help</a></div>
+</section>
+<section class="grid grid-cols-2 gap-4 md:grid-cols-4">${STATS.map(([n,l,c])=>`<div class="${CARD} text-center"><p class="text-3xl font-bold ${c==="green"?"text-green-600":c==="amber"?"text-amber-600":c==="blue"?"text-blue-600":"text-slate-800"}">${n}</p><p class="mt-1 text-sm text-slate-500">${l}</p></div>`).join("")}</section>
+<section id="features" class="pt-20"><h2 class="text-2xl font-bold tracking-tight md:text-3xl">Everything you need on campus</h2><p class="mt-2 text-slate-500">Six tools, one place. Pick one to get started.</p>
+<div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">${FEATURES.map(([h,i,t,d])=>`<a href="${h}" class="${CARD} block"><div class="grid h-12 w-12 place-items-center rounded-xl bg-blue-50 text-2xl">${i}</div><h3 class="mt-4 text-lg font-semibold">${t}</h3><p class="mt-1 text-sm text-slate-500">${d}</p><p class="mt-4 text-sm font-medium text-blue-600">Open ${t.split(" ")[0].toLowerCase()} →</p></a>`).join("")}</div></section>`;
+</script></body></html>

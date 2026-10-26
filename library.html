@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Library · CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+</head><body class="bg-white font-sans text-slate-900 antialiased">
+<div id="nav"></div>
+<main class="mx-auto max-w-6xl px-5 py-12"><div id="header"></div><div id="app"></div></main>
+<div id="footer"></div>
+<script src="shared.js" onerror="document.body.innerHTML='<div style=&quot;font-family:sans-serif;padding:40px&quot;><h2>shared.js not found</h2><p>Keep ALL files in the same folder (campusconnect) and open index.html from there.</p></div>'"></script>
+<script>
+pageHeader("Smart Library Seat Tracker","Check which floors have room before you walk over, then reserve a seat for your study slot.",badge("● Live","green"));
+const FLOORS=[{name:"Ground Floor",free:18,total:120},{name:"First Floor",free:21,total:100},{name:"Second Floor",free:8,total:80}];
+const seatStatus=f=>{const o=(f.total-f.free)/f.total*100;return o<75?["Available","green","bg-green-500"]:o<90?["Filling up","amber","bg-amber-500"]:["Almost full","red","bg-red-500"];};
+document.getElementById("app").innerHTML=`<div class="grid gap-5 md:grid-cols-3">${FLOORS.map((f,i)=>{const o=Math.round((f.total-f.free)/f.total*100),[s,c,bar]=seatStatus(f);return `<div class="${CARD}">
+<div class="flex items-center justify-between"><h3 class="text-lg font-semibold">${f.name}</h3>${badge(s,c)}</div>
+<p class="mt-5 text-4xl font-bold">${f.free}<span class="text-lg font-medium text-slate-400"> / ${f.total}</span></p><p class="text-sm text-slate-500">seats available</p>
+<div class="mt-5 h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full ${bar}" style="width:${o}%"></div></div><p class="mt-2 text-xs text-slate-500">${o}% occupied</p>
+<button onclick="book(${i})" class="${BTN} mt-6 w-full">Book Seat</button></div>`}).join("")}</div>`;
+function book(i){openModal("Book a seat",
+ select("floor","Floor",FLOORS.map(f=>f.name))+select("slot","Time slot",["9:00 – 11:00 AM","11:00 AM – 1:00 PM","2:00 – 4:00 PM","4:00 – 6:00 PM","6:00 – 9:00 PM"])+select("type","Seat type",["Standard desk","Quiet zone","Computer desk","Group table"]),
+ "Confirm booking",m=>modalSuccess(m,`Seat booked on ${val("floor")}, ${val("slot")}`));
+ document.getElementById("floor").selectedIndex=i;}
+</script></body></html>

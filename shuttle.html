@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuttle · CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+</head><body class="bg-white font-sans text-slate-900 antialiased">
+<div id="nav"></div>
+<main class="mx-auto max-w-6xl px-5 py-12"><div id="header"></div><div id="app"></div></main>
+<div id="footer"></div>
+<script src="shared.js" onerror="document.body.innerHTML='<div style=&quot;font-family:sans-serif;padding:40px&quot;><h2>shared.js not found</h2><p>Keep ALL files in the same folder (campusconnect) and open index.html from there.</p></div>'"></script>
+<script>
+pageHeader("Campus Shuttle & Bus Timings","Know exactly when the next shuttle leaves and which route to take.",badge("● Running","green"));
+const ROUTES=[["Hostel → Academic Block","8:30 AM","Every 15 min"],["Main Gate → Library","9:00 AM","Every 20 min"],["Hostel → Food Court","12:00 PM","Every 30 min"],["Campus → Railway Station","4:30 PM","Every 60 min"]];
+const TIMES=[["7:30 AM","Hostel → Academic Block","On time"],["8:30 AM","Main Gate → Library","On time"],["10:00 AM","Hostel → Food Court","On time"],["1:00 PM","Campus → Railway Station","Delayed 5 min"],["4:30 PM","Hostel → Academic Block","On time"],["8:00 PM","Library → Hostel","On time"]];
+let left=240;
+document.getElementById("app").innerHTML=`
+<div class="rounded-2xl bg-blue-600 p-8 text-white shadow-lg md:p-10"><p class="text-sm font-medium text-blue-100">Next shuttle · Hostel → Academic Block</p>
+<p id="count" class="mt-3 text-6xl font-bold tabular-nums md:text-7xl">04:00</p><p class="mt-2 text-blue-100">minutes until departure from Main Gate</p></div>
+<h2 class="mb-4 mt-12 text-xl font-semibold">Routes</h2>
+<div class="grid gap-5 sm:grid-cols-2">${ROUTES.map(r=>`<div class="${CARD}"><h3 class="font-semibold">${r[0]}</h3><div class="mt-3 flex gap-6 text-sm text-slate-500"><span>Departs <b class="text-slate-800">${r[1]}</b></span><span>${r[2]}</span></div><button onclick="toast('Tracking: ${r[0]}')" class="${BTN2} mt-5">Track Route</button></div>`).join("")}</div>
+<h2 class="mb-4 mt-12 text-xl font-semibold">Today's timetable</h2>
+<div class="overflow-x-auto rounded-2xl border border-slate-200"><table class="w-full min-w-[480px] text-left text-sm"><thead class="bg-slate-50 text-slate-500"><tr><th class="px-5 py-3 font-medium">Time</th><th class="px-5 py-3 font-medium">Route</th><th class="px-5 py-3 font-medium">Status</th></tr></thead>
+<tbody class="divide-y divide-slate-100">${TIMES.map(t=>`<tr class="transition hover:bg-slate-50"><td class="px-5 py-3 font-medium">${t[0]}</td><td class="px-5 py-3">${t[1]}</td><td class="px-5 py-3">${badge(t[2],t[2]==="On time"?"green":"amber")}</td></tr>`).join("")}</tbody></table></div>`;
+/* Countdown: resets to 20 minutes when it reaches zero */
+setInterval(()=>{left=left>0?left-1:1200;const m=String(Math.floor(left/60)).padStart(2,"0"),s=String(left%60).padStart(2,"0");document.getElementById("count").textContent=m+":"+s;},1000);
+</script></body></html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emergency · CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+</head><body class="bg-white font-sans text-slate-900 antialiased">
+<div id="nav"></div>
+<main class="mx-auto max-w-6xl px-5 py-12"><div id="header"></div><div id="app"></div></main>
+<div id="footer"></div>
+<script src="shared.js" onerror="document.body.innerHTML='<div style=&quot;font-family:sans-serif;padding:40px&quot;><h2>shared.js not found</h2><p>Keep ALL files in the same folder (campusconnect) and open index.html from there.</p></div>'"></script>
+<script>
+pageHeader("Emergency & Warden Connect","Tap a card to open WhatsApp with a message already written. Just press send.");
+/* Replace these demo numbers with real campus numbers (country code, no + or spaces) */
+const wa=(n,msg)=>`https://wa.me/${n}?text=${encodeURIComponent(msg)}`;
+const ACTIONS=[
+ {t:"Emergency SOS",i:"🚨",d:"Medical emergency, fire or any immediate danger. Alerts campus security first.",b:"Send SOS on WhatsApp",u:wa("919876500001","🚨 EMERGENCY SOS! I need immediate help. Name: ____ Location: ____ Contact: ____"),sos:true},
+ {t:"Contact Warden",i:"🏠",d:"Hostel issues, late entry, room problems or health concerns.",b:"Message Warden",u:wa("919876500002","Hello Warden, I need your assistance. Name: ____ Block/Room: ____ Issue: ____")},
+ {t:"Security Desk",i:"🛡️",d:"Lost items, suspicious activity, gate access or visitor queries.",b:"Message Security",u:wa("919876500003","Hello Security Desk, I need help. Name: ____ Location: ____ Issue: ____")}];
+document.getElementById("app").innerHTML=`<div class="grid gap-5 md:grid-cols-3">${ACTIONS.map(a=>a.sos?
+`<div class="rounded-2xl bg-red-600 p-8 text-white shadow-xl ring-4 ring-red-100 transition hover:-translate-y-0.5 md:scale-105"><div class="text-5xl">${a.i}</div><h2 class="mt-5 text-2xl font-bold">${a.t}</h2><p class="mt-2 text-red-100">${a.d}</p><a href="${a.u}" target="_blank" rel="noopener" class="mt-8 flex items-center justify-center rounded-xl bg-white px-5 py-3 font-semibold text-red-600 transition hover:bg-red-50">${a.b}</a></div>`:
+`<div class="${CARD} p-8"><div class="text-5xl">${a.i}</div><h2 class="mt-5 text-xl font-semibold">${a.t}</h2><p class="mt-2 text-slate-500">${a.d}</p><a href="${a.u}" target="_blank" rel="noopener" class="${BTN} mt-8 w-full">${a.b}</a></div>`).join("")}</div>
+<div class="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-800"><b>In a life-threatening emergency, call 112 first.</b> WhatsApp messages are for campus coordination and may take a moment to be read.</div>`;
+</script></body></html>
